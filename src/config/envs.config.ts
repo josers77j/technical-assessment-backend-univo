@@ -3,11 +3,12 @@ import 'dotenv/config';
 import * as joi from 'joi';
 
 interface EnvVars {
+  PORT: number;
   DATABASE_URL: string;
 }
 
 const envSchema = joi
-  .object({
+  .object<EnvVars>({
     PORT: joi.number(),
     DATABASE_URL: joi.string().required(),
   })
@@ -19,3 +20,8 @@ if (responseSchema.error)
   throw new InternalServerErrorException(
     `Config valid error: ${responseSchema.error.message}`,
   );
+
+export const envVars: EnvVars = {
+  PORT: responseSchema.value.PORT,
+  DATABASE_URL: responseSchema.value.DATABASE_URL,
+};
