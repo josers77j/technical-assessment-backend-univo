@@ -13,21 +13,43 @@ datasource db {
   provider = "postgresql"
 }
 
-model providers {
-  id          Int      @id @default(autoincrement())
-  name        String
-  address     String
-  phone       String
-  description String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+enum USER_STATUS {
+  ACTIVE
+  INACTIVE
 }
 
-model products {
-  id          Int      @id @default(autoincrement())
+model Provider {
+  id          Int     @id @default(autoincrement())
   name        String
-  price       Decimal  @db.Decimal(10, 2)
-  description String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  address     String?
+  phone       String?
+  description String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Optional properties
+  email  String?
+  status USER_STATUS @default(ACTIVE)
+
+  products Product[]
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Decimal @db.Decimal(10, 2)
+  description String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Optional properties
+  sku            String? @unique
+  stock_quantity Int?
+  category       String?
+  dimensions     String?
+
+  providerId Int
+  provider   Provider @relation(fields: [providerId], references: [id])
 }
