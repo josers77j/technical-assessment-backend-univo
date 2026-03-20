@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/service/prisma.service';
+import { PrismaService } from './../../../prisma/service/prisma.service';
 import { ProviderFilter } from '../interfaces/provider-filter.interface';
 import { CreateProviderDto } from '../dto/create-provider.dto';
 import { UpdateProviderDto } from '../dto/update-provider.dto';
