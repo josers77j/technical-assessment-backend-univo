@@ -1,7 +1,5 @@
 import {
   IsString,
-  IsNotEmpty,
-  MinLength,
   IsOptional,
   IsPhoneNumber,
   IsEmail,
@@ -11,8 +9,7 @@ import { ProviderStatus } from '../consts/provider-status.const';
 
 export class UpdateProviderDto {
   @IsString()
-  @IsNotEmpty()
-  @MinLength(3)
+  @IsOptional()
   name!: string;
 
   @IsString()

@@ -20,8 +20,9 @@ export class ProvidersService {
     const providerFilter: ProviderFilter = {};
 
     providerFilter.pagination = { take: limit!, skip: (page! - 1) * limit! };
-    if (sort !== null) providerFilter.orderBy = sort;
-    if (fields !== null) providerFilter.select = fields;
+    if (sort && sort?.length > 0) providerFilter.orderBy = sort;
+    if (typeof fields === 'object' && Object.keys(fields).length > 0)
+      providerFilter.select = fields;
 
     if (filter !== undefined)
       providerFilter.where = {
