@@ -1,6 +1,6 @@
-import { Provider } from '@prisma/client';
+import { Product } from '@prisma/client';
 
 export interface CreateResponse {
   success: boolean;
-  data: Partial<Provider>;
+  data: Partial<Product>;
 }

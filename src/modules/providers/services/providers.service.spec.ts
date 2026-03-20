@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProvidersService } from './providers.service';
-import { ProviderRepository } from '../repository/provider.repository';
+import { ProviderRepository } from '../repositories/provider.repository';
 import { NotFoundException } from '@nestjs/common';
 import { CreateProviderDto } from '../dto/create-provider.dto';
 import { UpdateProviderDto } from '../dto/update-provider.dto';

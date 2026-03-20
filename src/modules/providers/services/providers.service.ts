@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProviderDto } from '../dto/create-provider.dto';
 import { UpdateProviderDto } from '../dto/update-provider.dto';
 import { ProviderFilterDto } from '../dto/provider-filter.dto';
-import { ProviderRepository } from '../repository/provider.repository';
+import { ProviderRepository } from '../repositories/provider.repository';
 import { ProviderFilter } from '../interfaces/provider-filter.interface';
 import { ProviderTransformer } from '../transformers/provider.transformer';
 import { CreateResponseTransformer } from '../transformers/create-response.transformer';
