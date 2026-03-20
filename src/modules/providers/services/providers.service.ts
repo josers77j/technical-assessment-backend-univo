@@ -4,12 +4,15 @@ import { UpdateProviderDto } from '../dto/update-provider.dto';
 import { ProviderFilterDto } from '../dto/provider-filter.dto';
 import { ProviderRepository } from '../repository/provider.repository';
 import { ProviderFilter } from '../interfaces/provider-filter.interface';
+import { ProviderTransformer } from '../transformers/provider.transformer';
+import { CreateResponseTransformer } from '../transformers/create-response.transformer';
 
 @Injectable()
 export class ProvidersService {
   constructor(private readonly providerRepository: ProviderRepository) {}
-  create(createProviderDto: CreateProviderDto) {
-    return 'This action adds a new provider';
+  async create(createProviderDto: CreateProviderDto) {
+    const provider = await this.providerRepository.create(createProviderDto);
+    return CreateResponseTransformer(provider);
   }
 
   async findAll(providerFilterDto: ProviderFilterDto) {
@@ -45,21 +48,28 @@ export class ProvidersService {
         ],
       };
 
-    console.log(providerFilter.where);
-
     const provider = await this.providerRepository.findAll(providerFilter);
-    return provider;
+    return ProviderTransformer({ ...provider, pagination: { page, limit } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} provider`;
+  async findOneById(id: number) {
+    return await this.providerRepository.findOneById(id);
   }
 
-  update(id: number, updateProviderDto: UpdateProviderDto) {
-    return `This action updates a #${id} provider`;
+  async update(id: number, updateProviderDto: UpdateProviderDto) {
+    await this.findOneById(id);
+
+    const provider = await this.providerRepository.update(
+      id,
+      updateProviderDto,
+    );
+
+    return CreateResponseTransformer(provider);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} provider`;
+  async remove(id: number) {
+    await this.findOneById(id);
+
+    await this.providerRepository.remove(id);
   }
 }

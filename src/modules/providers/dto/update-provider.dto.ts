@@ -32,6 +32,7 @@ export class UpdateProviderDto {
   @IsEmail()
   email?: string;
 
+  @IsOptional()
   @IsEnum(ProviderStatus)
-  status?: typeof ProviderStatus;
+  status?: ProviderStatus;
 }

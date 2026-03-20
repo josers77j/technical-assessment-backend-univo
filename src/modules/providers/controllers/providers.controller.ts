@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 
 import { CreateProviderDto } from '../dto/create-provider.dto';
@@ -30,8 +31,8 @@ export class ProvidersController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.providersService.findOne(id);
+  findOneById(@Param('id', ParseIntPipe) id: number) {
+    return this.providersService.findOneById(id);
   }
 
   @Patch(':id')
@@ -42,6 +43,7 @@ export class ProvidersController {
     return this.providersService.update(id, updateProviderDto);
   }
 
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.providersService.remove(id);

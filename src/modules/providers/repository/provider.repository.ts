@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/service/prisma.service';
 import { ProviderFilter } from '../interfaces/provider-filter.interface';
+import { CreateProviderDto } from '../dto/create-provider.dto';
+import { UpdateProviderDto } from '../dto/update-provider.dto';
 
 @Injectable()
 export class ProviderRepository {
@@ -25,5 +27,39 @@ export class ProviderRepository {
     };
 
     return response;
+  }
+
+  async findOneById(id: number) {
+    return await this.prismaService.provider.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        products: true,
+      },
+    });
+  }
+
+  async create(createProviderDto: CreateProviderDto) {
+    return await this.prismaService.provider.create({
+      data: {
+        ...createProviderDto,
+      },
+    });
+  }
+
+  async update(id: number, updateProviderDto: UpdateProviderDto) {
+    return await this.prismaService.provider.update({
+      where: { id },
+      data: {
+        ...updateProviderDto,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    return await this.prismaService.provider.delete({
+      where: { id },
+    });
   }
 }
