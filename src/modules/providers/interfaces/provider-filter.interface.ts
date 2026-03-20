@@ -8,6 +8,8 @@ interface Pagination {
 export interface ProviderFilter {
   pagination?: Pagination;
   where?: Prisma.ProviderWhereInput;
-  orderBy?: Prisma.ProviderOrderByWithRelationInput;
+  orderBy?:
+    | Prisma.ProviderOrderByWithRelationInput
+    | Prisma.ProviderOrderByWithRelationInput[];
   select?: Prisma.ProviderSelect;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProviderDto } from '../dto/create-provider.dto';
 import { UpdateProviderDto } from '../dto/update-provider.dto';
 import { ProviderFilterDto } from '../dto/provider-filter.dto';
@@ -22,7 +22,6 @@ export class ProvidersService {
     providerFilter.pagination = { take: limit!, skip: (page! - 1) * limit! };
     if (sort !== null) providerFilter.orderBy = sort;
     if (fields !== null) providerFilter.select = fields;
-    console.log(filter);
 
     if (filter !== undefined)
       providerFilter.where = {
@@ -53,7 +52,11 @@ export class ProvidersService {
   }
 
   async findOneById(id: number) {
-    return await this.providerRepository.findOneById(id);
+    const provider = await this.providerRepository.findOneById(id);
+
+    if (!provider) throw new NotFoundException('provider not found');
+
+    return provider;
   }
 
   async update(id: number, updateProviderDto: UpdateProviderDto) {

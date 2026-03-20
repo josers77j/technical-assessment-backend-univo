@@ -1,5 +1,11 @@
 import { Transform, TransformFnParams, Type } from 'class-transformer';
-import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 interface Fields {
   [key: string]: boolean;
@@ -47,16 +53,29 @@ export class PaginationDto {
   fields?: Fields;
 
   @IsOptional()
-  @IsObject()
-  @Transform(({ value }: TransformFnParams): Sort | null => {
+  @IsArray()
+  @IsObject({ each: true })
+  @Transform(({ value }: TransformFnParams): Sort[] | null => {
     const raw: unknown = value;
-    if (raw && typeof raw === 'string') {
-      const isDescending = raw.startsWith('-');
-      const field = isDescending ? raw.slice(1) : raw;
-      return { [field]: isDescending ? 'desc' : 'asc' };
+
+    if (typeof raw === 'string') {
+      const data = raw
+        .split(',')
+        .map((field) => field.trim())
+        .filter((field) => field.length > 0);
+      const dataConverted = data.reduce<Sort[]>((acc, sort) => {
+        const isDescending = sort.startsWith('-');
+        const field = isDescending ? sort.slice(1) : sort;
+
+        acc.push({ [field]: isDescending ? 'desc' : 'asc' });
+
+        return acc;
+      }, []);
+
+      return dataConverted;
     }
 
     return null;
   })
-  sort?: Sort;
+  sort?: Sort[];
 }
