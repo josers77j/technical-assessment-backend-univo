@@ -25,8 +25,8 @@ model Provider {
   phone       String?
   description String?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   //Optional properties
   email  String?
@@ -41,14 +41,14 @@ model Product {
   price       Decimal @db.Decimal(10, 2)
   description String?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   //Optional properties
-  sku            String? @unique
-  stock_quantity Int?
-  category       String?
-  dimensions     String?
+  sku           String? @unique
+  stockQuantity Int?    @map("stock_quantity")
+  category      String?
+  dimensions    String?
 
   providerId Int
   provider   Provider @relation(fields: [providerId], references: [id])
