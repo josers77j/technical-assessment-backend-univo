@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProviderDto } from '../dto/create-provider.dto';
 import { UpdateProviderDto } from '../dto/update-provider.dto';
 import { ProviderFilterDto } from '../dto/provider-filter.dto';
@@ -53,16 +53,10 @@ export class ProvidersService {
   }
 
   async findOneById(id: number) {
-    const provider = await this.providerRepository.findOneById(id);
-
-    if (!provider) throw new NotFoundException('provider not found');
-
-    return provider;
+    return await this.providerRepository.findOneById(id);
   }
 
   async update(id: number, updateProviderDto: UpdateProviderDto) {
-    await this.findOneById(id);
-
     const provider = await this.providerRepository.update(
       id,
       updateProviderDto,
@@ -72,8 +66,6 @@ export class ProvidersService {
   }
 
   async remove(id: number) {
-    await this.findOneById(id);
-
     await this.providerRepository.remove(id);
   }
 }

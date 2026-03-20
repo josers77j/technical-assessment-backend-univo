@@ -8,6 +8,8 @@ import {
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
+import { Transform, TransformFnParams } from 'class-transformer';
+
 export class UpdateProductDto {
   @ApiPropertyOptional({ example: 'Laptop Dell XPS 15' })
   @IsOptional()
@@ -57,5 +59,10 @@ export class UpdateProductDto {
   @IsOptional()
   @IsInt()
   @Min(1)
+  @Transform(({ value }: TransformFnParams) => {
+    if (!value) return undefined;
+
+    return +value;
+  })
   providerId?: number;
 }

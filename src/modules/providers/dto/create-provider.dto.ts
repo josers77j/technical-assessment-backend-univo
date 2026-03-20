@@ -28,8 +28,8 @@ export class CreateProviderDto {
   address?: string;
 
   @ApiPropertyOptional({
-    example: '+1 555 123 4567',
-    description: 'Provider contact phone number.',
+    example: '+50372727272',
+    description: 'Phone in E.164 format, including country code, no spaces.',
   })
   @IsString()
   @IsPhoneNumber()

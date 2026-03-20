@@ -30,7 +30,7 @@ export class ProviderRepository {
   }
 
   async findOneById(id: number) {
-    return await this.prismaService.provider.findUnique({
+    return await this.prismaService.provider.findUniqueOrThrow({
       where: {
         id,
       },

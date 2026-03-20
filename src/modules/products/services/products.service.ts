@@ -1,5 +1,5 @@
 import { ProductRepository } from './../repositories/product.repository';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductFilterDto } from '../dto/product-filter.dto';
@@ -57,11 +57,7 @@ export class ProductsService {
   }
 
   async findOneById(id: number) {
-    const product = await this.productRepository.findOneById(id);
-
-    if (!product) throw new NotFoundException('Product not found');
-
-    return product;
+    return await this.productRepository.findOneById(id);
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {

@@ -26,8 +26,8 @@ export class UpdateProviderDto {
   address?: string;
 
   @ApiPropertyOptional({
-    example: '+1 555 123 4567',
-    description: 'Updated provider phone number.',
+    example: '+50372727272',
+    description: 'Phone in E.164 format, including country code, no spaces.',
   })
   @IsString()
   @IsPhoneNumber()
