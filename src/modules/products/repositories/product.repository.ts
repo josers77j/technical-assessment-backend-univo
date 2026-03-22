@@ -37,6 +37,9 @@ export class ProductRepository {
   async findOneById(id: number) {
     return await this.prismaService.product.findUniqueOrThrow({
       where: { id },
+      include: {
+        provider: true,
+      },
     });
   }
 

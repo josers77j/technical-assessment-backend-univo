@@ -74,7 +74,7 @@ describe('ProductsService', () => {
       expect.objectContaining({
         pagination: { take: 10, skip: 0 },
         orderBy: [{ name: 'asc' }],
-        select: { id: true, name: true },
+        select: { id: true, name: true, provider: true },
       }),
     );
     expect(response).toEqual({
@@ -83,6 +83,27 @@ describe('ProductsService', () => {
       totalItems: 1,
       itemsArray: [{ id: 1, name: 'Laptop' }],
     });
+  });
+
+  it('findAll should include provider when fields are not provided', async () => {
+    const query: ProductFilterDto = {
+      page: 1,
+      limit: 10,
+    };
+
+    productRepositoryMock.findAll.mockResolvedValue({
+      products: [{ id: 1, name: 'Laptop', provider: { id: 1 } }],
+      totalItems: 1,
+    });
+
+    await service.findAll(query);
+
+    expect(productRepositoryMock.findAll).toHaveBeenCalledWith(
+      expect.objectContaining({
+        pagination: { take: 10, skip: 0 },
+        include: { provider: true },
+      }),
+    );
   });
 
   it('findOneById should return product when found', async () => {

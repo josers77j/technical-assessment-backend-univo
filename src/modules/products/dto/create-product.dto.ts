@@ -1,5 +1,4 @@
 import {
-  IsDecimal,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateProductDto {
   @ApiProperty({
@@ -25,7 +25,7 @@ export class CreateProductDto {
     description: 'Product price as decimal string.',
   })
   @IsNotEmpty()
-  @IsDecimal({ decimal_digits: '1,2' })
+  @IsString()
   price!: string;
 
   @ApiPropertyOptional({
@@ -58,6 +58,7 @@ export class CreateProductDto {
   })
   @IsOptional()
   @IsInt()
+  @Type(() => Number)
   stockQuantity?: number;
 
   @ApiPropertyOptional({
@@ -75,5 +76,6 @@ export class CreateProductDto {
   @IsNotEmpty()
   @IsInt()
   @Min(1)
+  @Type(() => Number)
   providerId!: number;
 }

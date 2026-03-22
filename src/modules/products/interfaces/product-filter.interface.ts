@@ -12,4 +12,5 @@ export interface ProductFilter {
     | Prisma.ProductOrderByWithRelationInput
     | Prisma.ProductOrderByWithRelationInput[];
   select?: Prisma.ProductSelect;
+  include?: Prisma.ProductInclude;
 }

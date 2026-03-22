@@ -10,7 +10,7 @@ describe('ProductRepository', () => {
     product: {
       count: jest.fn(),
       findMany: jest.fn(),
-      findUnique: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
@@ -67,16 +67,17 @@ describe('ProductRepository', () => {
     });
   });
 
-  it('findOneById should call prisma product.findUnique', async () => {
-    prismaServiceMock.product.findUnique.mockResolvedValue({
+  it('findOneById should call prisma product.findUniqueOrThrow', async () => {
+    prismaServiceMock.product.findUniqueOrThrow.mockResolvedValue({
       id: 1,
       name: 'Laptop',
     });
 
     await repository.findOneById(1);
 
-    expect(prismaServiceMock.product.findUnique).toHaveBeenCalledWith({
+    expect(prismaServiceMock.product.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 1 },
+      include: { provider: true },
     });
   });
 

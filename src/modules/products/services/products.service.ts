@@ -1,5 +1,5 @@
 import { ProductRepository } from './../repositories/product.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProductFilterDto } from '../dto/product-filter.dto';
@@ -25,7 +25,15 @@ export class ProductsService {
     if (sort && sort?.length > 0) productFilter.orderBy = sort;
 
     if (typeof fields === 'object' && Object.keys(fields).length > 0)
-      productFilter.select = fields;
+      productFilter.select = {
+        ...fields,
+        provider: true,
+      };
+
+    if (!productFilter.select)
+      productFilter.include = {
+        provider: true,
+      };
 
     if (filter !== undefined && filter)
       productFilter.where = {
@@ -57,7 +65,11 @@ export class ProductsService {
   }
 
   async findOneById(id: number) {
-    return await this.productRepository.findOneById(id);
+    const product = await this.productRepository.findOneById(id);
+
+    if (!product) throw new NotFoundException(`Product with id ${id} not found`);
+
+    return product;
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
